@@ -16,9 +16,11 @@ export const connectToDatabase = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
+
     isConnected = true;
+
     console.log("MongoDB is connected");
   } catch (error) {
-    console.log(error);
+    console.log("Database connection error:",error.message);
   }
 };
