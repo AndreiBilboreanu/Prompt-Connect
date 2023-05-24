@@ -5,7 +5,6 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 import { ClipboardIcon, CheckIcon } from "@heroicons/react/24/outline";
-import { set } from "mongoose";
 
 export const PromptCard = ({
   post,
@@ -14,6 +13,10 @@ export const PromptCard = ({
   handleDelete,
 }) => {
   const [copied, setCopied] = useState("");
+
+  const { data: session } = useSession();
+  const pathName = usePathname();
+  const router = useRouter();
 
   const handleCopy = () => {
     setCopied(post.prompt);
@@ -58,6 +61,22 @@ export const PromptCard = ({
       >
         {post.tag}
       </p>
+      {session?.user?.id === post.creator._id && pathName === "profile" && (
+        <div className="mt-5 flex-center gap-4 border-t border-grey-100 pt-3">
+          <p
+            className="font-inter text-sm green-gradient cursor-pointer"
+            onClick={handleEdit}
+          >
+            Edit
+          </p>
+          <p
+            className="font-inter text-sm orange-gradient cursor-pointer"
+            onClick={handleDelete}
+          >
+            Delete
+          </p>
+        </div>
+      )}
     </div>
   );
 };
